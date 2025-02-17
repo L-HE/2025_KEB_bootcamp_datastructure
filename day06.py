@@ -1,19 +1,36 @@
-# 파일 입출력
-
+# v1.2) https://github.com/inhadeepblue/2024_KEB_datastructure_algorithm
+# v0.7 guess number 예제를 자동화하고 로그파일(guess.txt)을 남기도록 코드를 수정하시오.
+# 단, 해당 프로그램이 로그시간을 갖도록 한다.
 import random
-import csv
 
-try:
-    #file pointer / 오픈할 때 많이 씀
-    # 'r' : 읽기 전용
-    with open('students.csv', 'r') as fp:
-        students_list = fp.readlines()
-        students_list.remove("이상혁\n")
 
-        for _ in range(3):
-            random_pick = random.choice(students_list)
-            print(random_pick, end='')
-            students_list.remove(random_pick)
-        #print(random.choice(students_list), end='')
-except FileNotFoundError as err:
-    print(err)
+def choose_number(num1, num2) -> int :
+    avg = (num2 + num1) // 2
+    return avg
+
+
+low = 1
+high = 100
+answer = random.randint(low, high)
+chance = 7
+
+with open('guess.txt', 'w') as fp:
+    while chance != 0:
+        guess = choose_number(low, high)
+        fp.write(f'Guess number is {guess}.')
+        if guess == answer:
+            print(f'You win. Answer is {answer}')
+            fp.write(f'You win. Answer is {answer}')
+            break
+        elif guess > answer:
+            chance = chance - 1
+            print(f'{guess} is bigger. Chance left : {chance}')
+            fp.write(f'{guess} is bigger. Chance left : {chance}\n')
+            high = guess
+        else:
+            chance = chance - 1
+            print(f'{guess} is lower. Chance left : {chance}')
+            fp.write(f'{guess} is lower. Chance left : {chance}\n')
+            low = guess
+    else:
+        print(f'You lost. Answer is {answer}')
