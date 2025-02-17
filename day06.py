@@ -1,10 +1,22 @@
-import numpy as np
+# 파일 입출력
 
-narray = np.array([1, 3.1, 2, 9])
-print(type(narray), type(narray[2]), type(narray[3]))
-print(narray[0], narray[1], narray[2], narray[3])
+import random
 
-array = [9, -11, '8', 7]
-print(array[0], array[1], array[2], array[3])
-print(type(array), type(array[2]), type(array[3]))
-print(id(array[0]), id(array[1]), id(array[2]), id(array[3]))
+#list 이름은 복수형. 중복이니까?
+# 상받은 사람 제거하기 방법 3가지 : del, remove(element), pop(key)
+students = []
+
+try:
+    #file pointer / 오픈할 때 많이 씀
+    # 'r' : 읽기 전용
+    file = input("File name = ")
+    fp = open(file, 'r')
+    readme_list = fp.readlines()
+    # 나누는 기준을 '_'로 설정
+    rls = readme_list[0].split('_')
+    print(readme_list)
+    print(rls)
+    # 열면 닫아야함
+    fp.close()
+except FileNotFoundError as err:
+    print(f"{file} is not exist. {err}")
