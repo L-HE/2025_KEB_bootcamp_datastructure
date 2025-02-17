@@ -8,5 +8,13 @@ def is_even(n) -> bool:
         return True
     return False
 
+a = 10
+b = 11
+
+print(a and b)
+print(a & b)
+print(a | b)
+print(a ^ b)
+
 n = int(input())
 print(is_even(n))
