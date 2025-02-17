@@ -1,33 +1,10 @@
-def fibonacci_recursion(n) -> int:
-    """
-    피보나치 수 계산함수 (재귀함수 버전)
-    :param n:
-    :return: 피보나치 계산 결과 값
-    """
-    memo = {}
+import numpy as np
 
-    if n in memo:
-        return memo[n]
-    elif n <= 1:
-        return n
-    else:
-        memo = {n: fibonacci_recursion(n - 2) + fibonacci_recursion(n - 1)}
-        return memo[n]
+narray = np.array([1, 3.1, 2, 9])
+print(type(narray), type(narray[2]), type(narray[3]))
+print(narray[0], narray[1], narray[2], narray[3])
 
-
-
-def fibonacci_loop(n) -> int:
-    """
-    피보나치 수 계산함수 (반복문 버전)
-    :param n:
-    :return: 피보나치 계산 결과 값
-    """
-    n_list=[0 ,1]
-    for i in range(n+1):
-        n_list.append(n_list[i] + n_list[i + 1])
-
-    return n_list[n]
-
-n = int(input())
-#print(fibonacci_loop(n))
-print(fibonacci_recursion(n))
+array = [9, -11, '8', 7]
+print(array[0], array[1], array[2], array[3])
+print(type(array), type(array[2]), type(array[3]))
+print(id(array[0]), id(array[1]), id(array[2]), id(array[3]))
