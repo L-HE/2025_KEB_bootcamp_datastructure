@@ -1,7 +1,4 @@
+# 0(1) 상수시간만 받음. 반복문의 횟수가 적어질수록 효율이 좋구나.
+# 상속을 안 할 수 없으나 최소한으로 사용하기.
 n = int(input())
-
-sum = 0
-for i in range(n + 1):
-    sum = sum + i
-
-print(f"sum = {sum}")
+print(n * (n+1) // 2)
