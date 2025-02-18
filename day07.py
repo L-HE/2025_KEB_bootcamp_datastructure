@@ -6,14 +6,17 @@ class Stack:
     def push(self, data):
         self.items.append(data)
 
-    def pop(self):
+    def pop(self) -> object:
         return self.items.pop()
 
-    def size(self):
+    def size(self) -> int:
         return len(self.items)
 
-    def peek(self):
+    def peek(self) -> object:
         return self.items[-1]
+
+    def is_empty(self) -> bool:
+        return len(self.items) == 0
 
 
 s1 = Stack()
