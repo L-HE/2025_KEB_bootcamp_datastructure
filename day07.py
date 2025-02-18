@@ -31,6 +31,24 @@ class LinkedList:
         return False
 
 
+    def remove(self, target):
+        if self.head.data == target:
+            self.head = self.head.next      #head updatd
+            #print("선두 노드 삭제")
+            return
+        current = self.head
+        previous = None
+        while current:
+            if current.data == target :
+                previous.next = current.next
+                break
+            else:
+                previous = current
+                current =  current.next
+
+
+
+
     def __str__(self):
         node = self.head
         while node is not None:
