@@ -92,26 +92,45 @@ def delete_group(group):
     parent = None
     while True:
         if group == current.data:
-            if current.left == None and current.right == None:
+            if current.left is None and current.right is None:
                 if parent.left == current:
                     parent.left = None
                 else:
                     parent.right = None
                 del current
 
-            elif current.left != None and current.right == None:
+            elif current.left is not None and current.right is None:
                 if parent.left == current:
                     parent.left = current.left
                 else:
                     parent.right = current.left
                 del current
 
-            elif current.left == None and current.right != None:
+            elif current.left is None and current.right is not None:
                 if parent.left == current:
                     parent.left = current.right
                 else:
                     parent.right = current.right
                 del current
+
+            elif current.left is not None and current.right is not None:
+                child = current.left
+                if parent.left == current:
+                    parent.left = current.left
+                    while True:
+                        if child.right is None:
+                            child.right = current.right
+                            break
+                        child = child.right
+                else:
+                    parent.right = current.left
+                    while True:
+                        if child.right is None:
+                            child.right = current.right
+                            break
+                        child = child.right
+                    del current
+
 
             print(f"{group}'이/가 삭제됨.")
             break
