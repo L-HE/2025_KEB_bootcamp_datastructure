@@ -1,121 +1,115 @@
-# Assignment1
-# find_vertex 함수에 BFS를 적용하시오.
+# Assignment
+# v3.1) v2.8 코드의 출력 방식을 BFS로 변경하시오.
 from collections import deque
 
 
-class Graph:
-	def __init__(self, size) :
-		self.SIZE = size
-		self.graph = [[0 for _ in range(size)] for _ in range(size)]
+def insert(root, value):
+    if root is None:
+        node = TreeNode()
+        node.data = value
+        return node
+
+    if value < root.data:
+        root.left = insert(root.left, value)
+    else:
+        root.right = insert(root.right, value)
+    return root
 
 
-def print_graph(g) :
-    print(' ', end=' ')
-    for v in range(g.SIZE):
-        print(name_ary[v], end=' ')
-    print()
-    for row in range(g.SIZE):
-        print(name_ary[row], end=' ')
-        for col in range(g.SIZE):
-            print(f"{g.graph[row][col]:2}", end=' ')
-        print()
-    print()
+def delete(root, value):
+    if root is None:
+        return root
+    if value < root.data:
+        root.left = delete(root.left, value)
+    elif value > root.data:
+        root.right = delete(root.right, value)
+    else:
+        if root.left is None and root.right is None:
+            return None
+        elif root.left is None:
+            return root.right
+        elif root.right is None:
+            return root.left
+        else:  # 자식이 두 개인 경우
+            root.data = find_min(root.right).data
+            root.right = delete(root.right, root.data)
+    return root
 
 
-def dfs(g, current, find_vtx, visited):
-    visited = []
-    visited.append(current)
-
-    # 찾고자 하는 vtx를 찾은 경우
-    if current == find_vtx:
-        return True
-
-    # 간선으로 연결되어 있으면서, vertex가 방문한 적 없음
-    for vertex in range(g.SIZE):
-        if g.graph[current][vertex] != 0 and vertex not in visited:
-            if dfs(g, vertex, find_vtx, visited):
-                return True
-    return False
+def find_min(node):
+    current = node
+    while current.left is not None:
+        current = current.left
+    return current
 
 
-def find_vertex(g, find_vtx):
-    """
-    with bfs
-    :param g:
-    :param find_vtx:
-    :return:
-    """
-    visited = []
-    queue = deque([0])
+def search(root, value):
+    current = root
+    while current:
+        if value == current.data:
+            return current
+        elif value < current.data:
+            current = current.left
+        else:
+            current = current.right
+    return None
+
+
+def bfs(num):
+    revel = num
+    current = root
+    queue = deque([current.data])
     while queue:
-        current = queue.popleft()
-        if current in visited:
-            continue
-        visited.append(current)
-        if current == find_vtx:
-            return True
-        for i in range(g.SIZE):
-            if g.graph[current][i] != 0 and i not in visited:
-                queue.append(i)
-    return False
+        node = queue.popleft()
+        print(node.data, end=' ')
+        if node.left is not None and node.right is not None:
+            queue.append(node.left.data)
+            queue.append(node.right.data)
+            revel += 1
+        elif node.left is not None and node.right is None:
+            queue.append(node.left.data)
+            revel += 1
+        elif node.left is None and node.right is not None:
+            queue.append(node.right.data)
+            revel += 1
+        else:
+            return
 
 
 
+class TreeNode:
 
-#G1 = None
-name_ary = ['춘천', '서울', '속초', '대전', '광주', '부산']
-춘천, 서울, 속초, 대전, 광주, 부산 = 0, 1, 2, 3, 4, 5
+    def __init__(self):
+        self.left = None
+        self.data = None
+        self.right = None
 
-g_size = 6
-G1 = Graph(g_size)
-G1.graph[춘천][서울] = 10; G1.graph[춘천][속초] = 15
-G1.graph[서울][춘천] = 10; G1.graph[서울][속초] = 40; G1.graph[서울][대전] = 11; G1.graph[서울][광주] = 50
-G1.graph[속초][춘천] = 15; G1.graph[속초][서울] = 40; G1.graph[속초][대전] = 12
-G1.graph[대전][서울] = 11; G1.graph[대전][속초] = 12; G1.graph[대전][광주] = 20; G1.graph[대전][부산] = 30
-G1.graph[광주][서울] = 50; G1.graph[광주][대전] = 20; G1.graph[광주][부산] = 25
-G1.graph[부산][대전] = 30; G1.graph[부산][광주] = 25
 
-print_graph(G1)
-
-# 간선 목록 만들기 [weight, start, end]
-edge_ary = []
-for i in range(g_size) :
-    for k in range(g_size) :
-        if G1.graph[i][k] != 0 :
-            edge_ary.append([G1.graph[i][k], i, k])
-
-print(edge_ary, len(edge_ary))
-
-# weight 순으로 목록 내림차순 정렬
-from operator import itemgetter
-edge_ary = sorted(edge_ary, key = itemgetter(0), reverse = True)
-
-print(edge_ary, len(edge_ary))
-
-# 중복 edge 제거
-new_ary = []
-for i in range(0, len(edge_ary), 2) :
-    new_ary.append(edge_ary[i])
-
-print(new_ary, len(new_ary))
-
-index = 0
-while len(new_ary) > g_size - 1:	# edge가 'vertex-1'일 때까지 반복
-    start = new_ary[index][1]
-    end = new_ary[index][2]
-    saveCost = new_ary[index][0]
-
-    G1.graph[start][end] = 0
-    G1.graph[end][start] = 0
-
-    startYN = find_vertex(G1, start)
-    endYN = find_vertex(G1, end)
-
-    if startYN and endYN :
-        del new_ary[index]
-    else :
-        G1.graph[start][end] = saveCost
-        G1.graph[end][start] = saveCost
-        index += 1
-
-print_graph(G1)
+if __name__ == '__main__':
+    root = None
+    while True:
+        num = int(input("기능을 선택해주세요.\n1)삽입   2)삭제   3)검색   4)bfs   5)종료:   "))
+        if num == 1:
+            value = input("삽입할 데이터: ")
+            insert(root, value)
+            print(f"{value} 삽입 완료")
+        elif num == 2:
+            value = input("삭제할 데이터: ")
+            if search(root, value):
+                root = delete(root, value)
+                print(f"{value} 삭제 완료")
+            else:
+                print(f"{value}은(는) 트리에 존재하지 않습니다.")
+        elif num == 3:
+            value = input("검색할 데이터: ")
+            if search(root, value):
+                print(f"{value}을(를) 찾았습니다.")
+            else:
+                print(f"{value}이(가) 존재하지 않습니다.")
+        elif num == 4:
+            bfs(0)
+        elif num == 5:
+            print("프로그램 종료")
+            break
+        else:
+            print("다시 입력해주세요.")
