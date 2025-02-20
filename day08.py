@@ -7,37 +7,24 @@ def pre_order(node):
     pre_order(node.right)
 
 
-def in_order(node):
-    if node is None:
-        print("-> end")
-        return
-    in_order(node.left)
-    print(node.data, end=' ')
-    in_order(node.right)
+def inis_group(value) -> object:
+    """
+    입력받은 값의 리스트를 받아, 이진탐색트리로 구성하는 함수
+    :param groups: 입력받은 값의 리스트
+    :return:
+    """
+    # global root
+    #
+    # node = TreeNode()
+    # node.data = groups[0]
+    # root = node
 
-
-def post_order(node):
-    if node is None:
-        print("-> end")
-        return
-    post_order(node.left)
-    post_order(node.right)
-    print(node.data, end=' ')
-
-
-def inis_group(groups):
-    global root
-
-    node = TreeNode()
-    node.data = groups[0]
-    root = node
-
-    for group in groups[1:]:
+    for value in values[1:]:
         node = TreeNode()
-        node.data = group
+        node.data = value
         current = root
         while True:
-            if group < current.data:
+            if value < current.data:
                 if current.left is None:
                     current.left = node
                     break
@@ -51,47 +38,77 @@ def inis_group(groups):
 
 
 def insert_group(groups):
-    for group in groups[::]:
-        node = TreeNode()
-        node.data = group
-        current = root
-        while True:
-            if group < current.data:
-                if current.left is None:
-                    current.left = node
-                    break
-                current = current.left
+    """
+    삽입할 값의 리스트를 받아 기존의 트리에 추가하는 함수
+    :param groups: 삽입할 값의 리스트
+    :return: 추가된 이진탐색트리
+    """
+    # for group in groups[::]:
+    #     node = TreeNode()
+    #     node.data = group
+    #     current = root
+    #     while True:
+    #         if group < current.data:
+    #             if current.left is None:
+    #                 current.left = node
+    #                 break
+    #             current = current.left
+    #         else:
+    #             if current.right is None:
+    #                 current.right = node
+    #                 break
+    #             current = current.right
+    #     print(f"{group} 추가 완료")
+    def insert(root, value):
+        for value in values[::]:
+            if root is None:
+                node = TreeNode()
+                node.data = value
+                return node
+
+            if value < root.data:
+                root.left = insert(root.left, value)
             else:
-                if current.right is None:
-                    current.right = node
-                    break
-                current = current.right
-        print(f"{group} 추가 완료")
+                root.right = insert(root.right, value)
+            return root
 
 
-def find_group(group):
+# def insert(root, data):
+#     """
+#     (?)준영씨의 코드 루팡
+#     :param root: 클래스 객체 초기 설정
+#     :param data: 입력받은 수
+#     :return:
+#     """
+#     if root is None:
+#         node = TreeNode()
+#         node.data = data
+#         return node
+#
+#     if data < root.data:
+#         root.left = insert(root.left, data)
+#     else:
+#         root.right = insert(root.right, data)
+#     return root
+
+
+def search(root, value):
     current = root
-    while True:
-        if group == current.data:
-            print(f"{group}을/를 찾았습니다.")
-            break
-        elif group < current.data:
-            if current.left is None:
-                print(f"{group}이/가 존재하지 않습니다.")
-                break
+    while current:
+        if value == current.data:
+            return current
+        elif value < current.data:
             current = current.left
         else:
-            if current.right is None:
-                print(f"{group}이/가 존재하지 않습니다.")
-                break
             current = current.right
+    return None
 
 
-def delete_group(group):
+def delete(value):
     current = root
     parent = None
     while True:
-        if group == current.data:
+        if value == current.data:
             if current.left is None and current.right is None:
                 if parent.left == current:
                     parent.left = None
@@ -116,14 +133,10 @@ def delete_group(group):
             elif current.left is not None and current.right is not None:
                 child = current.left
                 if parent.left == current:
-                    parent.left = current.left
-                    while True:
-                        if child.right is None:
-                            child.right = current.right
-                            break
-                        child = child.right
+                    parent.left = child.right
+                    
                 else:
-                    parent.right = current.left
+                    parent.right = child.right
                     while True:
                         if child.right is None:
                             child.right = current.right
@@ -132,18 +145,18 @@ def delete_group(group):
                     del current
 
 
-            print(f"{group}'이/가 삭제됨.")
+            print(f"{value}'이/가 삭제됨.")
             break
 
-        elif group < current.data:
+        elif value < current.data:
             if current.left is None:
-                print(f"{group}이/가 존재하지 않습니다.")
+                print(f"{value}이/가 존재하지 않습니다.")
                 break
             parent = current
             current = current.left
         else:
             if current.right is None:
-                print(f"{group}이/가 존재하지 않습니다.")
+                print(f"{value}이/가 존재하지 않습니다.")
                 break
             parent = current
             current = current.right
@@ -158,20 +171,29 @@ class TreeNode:
 
 
 if __name__ == "__main__":
-    groups = input("그룹을 입력하세요: ").split(' ')
-    inis_group(groups)
+    values = input("그룹을 입력하세요: ").split(' ')
+
+    global root
+
+    node = TreeNode()
+    node.data = values[0]
+    root = node
+    inis_group(values)
+
     while True:
-        num = int(input("번호를 입력하세요.\n1) 삽입   2) 검색   3) 삭제   4) 종료   : "))
+        num = int(input("번호를 입력하세요.\n1) 삽입   2) 검색   3) 삭제   4) 전위순회   5) 종료   : "))
         if num == 1:
             i_group = input("삽입할 그룹을 입력하세요: ").split(' ')
             insert_group(i_group)
         elif num == 2:
             f_group = input("검색할 그룹을 입력하세요: ")
-            find_group(f_group)
+            search(root, f_group)
         elif num == 3:
             d_group = input("삭제할 그룹을 입력하세요: ")
-            delete_group(d_group)
+            delete(d_group)
         elif num == 4:
+            pre_order(root)
+        elif num == 5:
             print("프로그램 종료")
             break
         else:
