@@ -1,6 +1,7 @@
-Guess number is 50.50 is lower. Chance left : 6
-Guess number is 75.75 is bigger. Chance left : 5
-Guess number is 62.62 is lower. Chance left : 4
-Guess number is 68.68 is lower. Chance left : 3
-Guess number is 71.71 is bigger. Chance left : 2
-Guess number is 69.You win. Answer is 69
+Guess number is 50.50 is bigger. Chance left : 6
+Guess number is 25.25 is lower. Chance left : 5
+Guess number is 37.37 is lower. Chance left : 4
+Guess number is 43.43 is bigger. Chance left : 3
+Guess number is 40.40 is lower. Chance left : 2
+Guess number is 41.41 is lower. Chance left : 1
+Guess number is 42.You win. Answer is 42
