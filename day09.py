@@ -55,25 +55,19 @@ def search(root, value):
     return None
 
 
-def bfs(num):
-    revel = num
-    current = root
+def bfs(node):
+    if node is None:
+        print("트리가 존재하지 않습니다.")
+        return
+    current = node
     queue = deque([current.data])
     while queue:
         node = queue.popleft()
         print(node.data, end=' ')
-        if node.left is not None and node.right is not None:
+        if node.left:
             queue.append(node.left.data)
+        if node.right:
             queue.append(node.right.data)
-            revel += 1
-        elif node.left is not None and node.right is None:
-            queue.append(node.left.data)
-            revel += 1
-        elif node.left is None and node.right is not None:
-            queue.append(node.right.data)
-            revel += 1
-        else:
-            return
 
 
 
@@ -107,7 +101,7 @@ if __name__ == '__main__':
             else:
                 print(f"{value}이(가) 존재하지 않습니다.")
         elif num == 4:
-            bfs(0)
+            bfs(root)
         elif num == 5:
             print("프로그램 종료")
             break
