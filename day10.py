@@ -18,6 +18,7 @@ def time_decorator(func):
         return r
     return  wrapper
 
+
 @time_decorator
 def insertion_sort(list):
     for i in range(1, len(list)):
@@ -28,6 +29,7 @@ def insertion_sort(list):
             #print(i, end=' ')
         list[i] = value
     return list
+
 
 @time_decorator
 def bubble_sort(list):
@@ -45,7 +47,25 @@ def bubble_sort(list):
     print(f"\n{count}")
 
 
+def quick_sort(list):
+    n = len(list)
+    if n <= 1: return list
+    pivot = list[n//2]
+    left = []
+    mid = []
+    right = []
+
+    for i in list:
+        if i < pivot:
+            left.append(i)
+        elif i > pivot:
+            right.append(i)
+        else:
+            mid.append(i)
+    return quick_sort(left) + mid + quick_sort(right)
+
+s = time.time()
 lists1 = [random.randint(1, 100000) for _ in range(10000)]
-lists2 = lists1.copy()
-print(insertion_sort(lists1))
-print(bubble_sort(lists2))
+print(quick_sort(lists1))
+e = time.time()
+print(f'duration time: {e - s}sec')
