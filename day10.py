@@ -1,71 +1,41 @@
-import time
-import random
-import copy
+# Assignment
+# Baekjoon 1158 요세푸스 : 수업시간에 설명(큐(데크), 원형링크드리스트)한 방법 외의 방법으로 문제를 해결하고 깃허브에 업로드 하시오.
 
 
-def time_decorator(func):
-    """
-    td
-    """
-    def wrapper(*arg):
-        """
-        wrapper
-        """
-        s = time.time()
-        r = func(*arg)
-        e = time.time()
-        print(f'duration time: {e - s}sec')
-        return r
-    return  wrapper
+def jose(n, k, current = 0) -> list:
+    members = [i for i in range(1, n + 1)]
+    res = []
+    del_num = None
 
-
-@time_decorator
-def insertion_sort(list):
-    for i in range(1, len(list)):
-        value = list[i]
-        while i > 0 and list[i - 1] > value:
-            list[i] = list[i - 1]
-            i -= 1
-            #print(i, end=' ')
-        list[i] = value
-    return list
-
-
-@time_decorator
-def bubble_sort(list):
-    count = 0
-    for i in range(len(list) - 1):
-        no_swaps = True
-        for j in range(len(list) - 1 - i):
-            if list[j] > list[j + 1]:
-                list[j], list[j + 1] = list[j + 1], list[j]
-                no_swaps = False
-            count += 1
-            #print(j, end=' ')
-        if no_swaps:
-            return list
-    print(f"\n{count}")
-
-
-def quick_sort(list):
-    n = len(list)
-    if n <= 1: return list
-    pivot = list[n//2]
-    left = []
-    mid = []
-    right = []
-
-    for i in list:
-        if i < pivot:
-            left.append(i)
-        elif i > pivot:
-            right.append(i)
+    if len(members) == 2:
+        a = members.pop(current)
+        res.append(members.pop())
+        res.append(a)
+        return res
+    else:
+        if current == 0:
+            del_num = (k-len(members))%(len(members)-1) + 1
+            if del_num == len(members) + 1:
+                current = 0
+            else:
+                current = del_num
+            res.append(members.pop(del_num))
+            return jose(n, k, current)
         else:
-            mid.append(i)
-    return quick_sort(left) + mid + quick_sort(right)
+            del_num = (k-len(members))%(len(members)-1) - 1
+            if del_num == len(members) + 1:
+                current = 0
+            else:
+                current = del_num
+            res.append(members.pop(del_num))
+            return jose(n, k, current)
 
-s = time.time()
-lists1 = [random.randint(1, 100000) for _ in range(10000)]
-print(quick_sort(lists1))
-e = time.time()
-print(f'duration time: {e - s}sec')
+
+
+
+if __name__ == "__main__":
+    j = list(map(int, input().split(' ')))
+    n = j[0]
+    k = j[1]
+
+    print(jose(n, k))
